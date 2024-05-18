@@ -4,10 +4,6 @@ on:
   workflow_call:
     # Introduced 'inputs' to define parameters that can be passed when calling this workflow
     inputs:
-      image:
-        description: "Image Name"
-        required: true
-        type: string
       sha:
         description: "Image SHA"
         required: true
@@ -28,7 +24,7 @@ jobs:
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
-          image: ${{ inputs.image }}:${{ inputs.sha }}
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.sha }}
       
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.5.0
