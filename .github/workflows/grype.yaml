@@ -25,6 +25,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Pull Docker image
+        run: docker ${{ inputs.image }}
+      
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
