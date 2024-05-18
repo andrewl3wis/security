@@ -28,7 +28,7 @@ jobs:
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
-          image: ${{ inputs.image }}
+          image: ${{ inputs.image }}:${{ inputs.sha }}
       
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.5.0
