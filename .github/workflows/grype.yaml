@@ -30,6 +30,7 @@ jobs:
 
       - name: Scan image
         uses: anchore/scan-action@v3
+        id: scan
         with:
           image: ${{ inputs.image }}
 
