@@ -67,9 +67,9 @@ jobs:
       - name: Keyless signing of image
         run: |
           echo ${{ inputs.image }}
-          cosign sign --key awskms://arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }}
+          cosign sign --key awskms:///arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }}
 
       - name: Verify the image signing
         run: |
-          cosign verify  --key awskms://arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }}s | jq .
+          cosign verify  --key awskms:///arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }}s | jq .
       
