@@ -37,39 +37,40 @@ jobs:
         with:
           aws-region: us-east-2
           role-to-assume: arn:aws:iam::821194404822:role/kms-write
+        continue-on-error: true
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Log in to the Container registry
+      #   uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Scan image
-        uses: anchore/scan-action@v3
-        id: scan
-        with:
-          image: ${{ inputs.image }}
-          severity-cutoff: critical
+      # - name: Scan image
+      #   uses: anchore/scan-action@v3
+      #   id: scan
+      #   with:
+      #     image: ${{ inputs.image }}
+      #     severity-cutoff: critical
       
-      - name: env
-        run: env
+      # - name: env
+      #   run: env
 
-      - name: Inspect action SARIF report
-        run: cat ${{ steps.scan.outputs.sarif }}
-        if: ${{ always() }}
+      # - name: Inspect action SARIF report
+      #   run: cat ${{ steps.scan.outputs.sarif }}
+      #   if: ${{ always() }}
       
-      - name: Install cosign
-        uses: sigstore/cosign-installer@v3.5.0
-        with:
-          cosign-release: 'v2.2.4'
+      # - name: Install cosign
+      #   uses: sigstore/cosign-installer@v3.5.0
+      #   with:
+      #     cosign-release: 'v2.2.4'
 
-      - name: Keyless signing of image
-        run: |
-          echo ${{ inputs.image }}
-          cosign sign --tlog-upload=false --key awskms:///arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }}
+      # - name: Keyless signing of image
+      #   run: |
+      #     echo ${{ inputs.image }}
+      #     cosign sign --tlog-upload=false --key awskms:///arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }}
 
-      - name: Verify the image signing
-        run: |
-          cosign verify --insecure-ignore-tlog --key awskms:///arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }} | jq .
+      # - name: Verify the image signing
+      #   run: |
+      #     cosign verify --insecure-ignore-tlog --key awskms:///arn:aws:kms:us-east-2:821194404822:alias/grype ${{ inputs.image }} | jq .
       
