@@ -34,6 +34,9 @@ jobs:
         with:
           image: ${{ inputs.image }}
           severity-cutoff: critical
+      
+      - name: env
+        run: env
 
       - name: Inspect action SARIF report
         run: cat ${{ steps.scan.outputs.sarif }}
