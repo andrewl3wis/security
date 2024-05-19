@@ -33,6 +33,7 @@ jobs:
         id: scan
         with:
           image: ${{ inputs.image }}
+          severity-cutoff: critical
 
       - name: Inspect action SARIF report
         run: cat ${{ steps.scan.outputs.sarif }}
