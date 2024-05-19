@@ -27,14 +27,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Pull Docker image
-        run: echo ${{ inputs.image }} ${{ inputs.blue }} && docker pull ${{ inputs.image }}
-      
+
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
           image: ${{ inputs.image }}
+
+      - name: Inspect action SARIF report
+        run: cat ${{ steps.scan.outputs.sarif }}
+        if: ${{ always() }}
       
       - name: Install cosign
         uses: sigstore/cosign-installer@v3.5.0
